@@ -1,11 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
-body{
-    background-color: #1e1e1e;
-    padding-left:20px;
-    padding-right:20px;
-    
-}
-.scroll-hidden::-webkit-scrollbar {
-      display: none;
+@custom-variant dark (&:where(.dark, .dark *));
+@layer base {
+  body {
+    font-family: 'Outfit', sans-serif;
+    /* Light mode default colors */
+    background-color: #f8fafc; /* Very light slate/gray */
+    color: #0f172a; /* Dark slate text */
+    margin: 0;
+    padding: 0;
+    /* This transition makes the theme switch look smooth instead of abrupt */
+    transition: background-color 0.3s ease, color 0.3s ease; 
+  }
 
+  /* When the 'dark' class is active on the HTML tag, these colors apply */
+  .dark body {
+    background-color: #0f172a;
+    color: #f8fafc;
+  }
+}
+
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
 }

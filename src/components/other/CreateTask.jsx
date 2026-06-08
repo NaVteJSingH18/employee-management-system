@@ -55,61 +55,86 @@ const CreateTask = () => {
     }
 
     return (
-        <div className='p-5 bg-[#1c1c1c] mt-5 rounded'>
-            <form onSubmit={(e) => {
-                submitHandler(e)
-            }}
-                className='flex flex-wrap w-full items-start justify-between'
-            >
-                <div className='w-1/2'>
-                    <div>
-                        <h3 className='text-sm text-gray-300 mb-0.5'>Task Title</h3>
-                        <input
-                            value={taskTitle}
-                            onChange={(e) => {
-                                setTaskTitle(e.target.value)
-                            }}
-                            className='text-sm py-1 px-2 w-4/5 rounded outline-none bg-transparent border-[1px] text-white border-gray-400 mb-4' type="text" placeholder='Make a UI design'
-                        />
-                    </div>
-                    <div>
-                        <h3 className='text-sm text-gray-300 mb-0.5'>Date</h3>
-                        <input
-                            value={taskDate}
-                            onChange={(e) => {
-                                setTaskDate(e.target.value)
-                            }}
-                            className='text-sm py-1 px-2 w-4/5 rounded outline-none bg-transparent border-[1px] text-white border-gray-400 mb-4' type="date" />
-                    </div>
-                    <div>
-                        <h3 className='text-sm text-gray-300 mb-0.5'>Asign to</h3>
-                        <input
-                            value={asignTo}
-                            onChange={(e) => {
-                                setAsignTo(e.target.value)
-                            }}
-                            className='text-sm py-1 px-2 w-4/5 rounded outline-none bg-transparent border-[1px] border-gray-400 text-white mb-4' type="text" placeholder='employee name' />
-                    </div>
-                    <div>   
-                        <h3 className='text-sm text-gray-300 mb-0.5'>Category</h3>
-                        <input
-                            value={category}
-                            onChange={(e) => {
-                                setCategory(e.target.value)
-                            }}
-                            className='text-sm py-1 px-2 w-4/5 rounded outline-none bg-transparent border-[1px] border-gray-400 text-white mb-4' type="text" placeholder='design, dev, etc' />
-                    </div>
-                </div>
+        // The card switches from clean white to translucent glassmorphism dynamically
+        <div className='bg-white dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/60 shadow-sm p-6 sm:p-8 rounded-2xl transition-all duration-300'>
+            
+            <div className="mb-6">
+                <h2 className="text-xl font-bold text-slate-800 dark:text-white tracking-tight">Create New Task</h2>
+                <p className="text-slate-500 dark:text-slate-400 text-xs">Assign a brand new assignment directly to a team member</p>
+            </div>
 
-                <div className='w-2/5 flex flex-col items-start'>
-                    <h3 className='text-sm text-gray-300 mb-0.5'>Description</h3>
-                    <textarea value={taskDescription}
-                        onChange={(e) => {
-                            setTaskDescription(e.target.value)
-                        }} className='w-full h-44 text-sm py-2 px-4 rounded outline-none bg-transparent border-[1px] border-gray-400 text-white'  name="" id=""></textarea>
-                    <button className='bg-emerald-500 py-3 hover:bg-emerald-600 px-5 rounded text-sm mt-4 w-full'>Create Task</button>
-                </div>
+            <form onSubmit={submitHandler} className='w-full'>
+                {/* Instead of manual widths, we group the content block inside an adaptive grid.
+                  - grid-cols-1: Single column pattern for mobile.
+                  - lg:grid-cols-2: Two side-by-side panels once layout width passes 1024 pixels.
+                */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-start">
+                    
+                    {/* Left Column Input Cluster */}
+                    <div className='flex flex-col gap-4 w-full'>
+                        <div className="flex flex-col gap-1.5">
+                            <label className='text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1'>Task Title</label>
+                            <input
+                                value={taskTitle}
+                                onChange={(e) => setTaskTitle(e.target.value)}
+                                className='w-full text-sm py-3 px-4 rounded-xl outline-none bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-emerald-500 dark:focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-slate-500' 
+                                type="text" 
+                                placeholder='e.g., Optimize Database Architecture'
+                            />
+                        </div>
 
+                        <div className="flex flex-col gap-1.5">
+                            <label className='text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1'>Due Date</label>
+                            <input
+                                value={taskDate}
+                                onChange={(e) => setTaskDate(e.target.value)}
+                                className='w-full text-sm py-3 px-4 rounded-xl outline-none bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-emerald-500 dark:focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-200 dark:[color-scheme:dark]' 
+                                type="date" 
+                            />
+                        </div>
+
+                        <div className="flex flex-col gap-1.5">
+                            <label className='text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1'>Assign To</label>
+                            <input
+                                value={asignTo}
+                                onChange={(e) => setAsignTo(e.target.value)}
+                                className='w-full text-sm py-3 px-4 rounded-xl outline-none bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-emerald-500 dark:focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-slate-500' 
+                                type="text" 
+                                placeholder='Employee name' 
+                            />
+                        </div>
+
+                        <div className="flex flex-col gap-1.5">
+                            <label className='text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1'>Category</label>
+                            <input
+                                value={category}
+                                onChange={(e) => setCategory(e.target.value)}
+                                className='w-full text-sm py-3 px-4 rounded-xl outline-none bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-emerald-500 dark:focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-slate-500' 
+                                type="text" 
+                                placeholder='Design, Development, QA, etc.' 
+                            />
+                        </div>
+                    </div>
+
+                    {/* Right Column Description & Action Section */}
+                    <div className='flex flex-col gap-1.5 w-full h-full justify-between'>
+                        <div className="flex flex-col gap-1.5 h-full">
+                            <label className='text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1'>Task Description</label>
+                            <textarea 
+                                value={taskDescription}
+                                onChange={(e) => setTaskDescription(e.target.value)} 
+                                className='w-full lg:h-[268px] min-h-[120px] text-sm py-3 px-4 rounded-xl outline-none bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-emerald-500 dark:focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none' 
+                                placeholder='Provide detailed guidelines regarding this task execution expectation...'
+                            />
+                        </div>
+
+                        {/* Complete action submit block with micro-interaction hover curves */}
+                        <button className='w-full outline-none border-none text-white font-semibold tracking-wide text-sm rounded-xl px-6 py-3.5 mt-4 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 active:scale-[0.98] transition-all duration-200 shadow-md shadow-emerald-500/10 hover:shadow-lg hover:shadow-emerald-500/20 cursor-pointer'>
+                            Create Task
+                        </button>
+                    </div>
+
+                </div>
             </form>
         </div>
     )

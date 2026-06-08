@@ -1,45 +1,52 @@
-import React, { useContext, useEffect } from 'react'
-
+import React, { useContext, useEffect, useState } from 'react'
 import Login from './components/Auth/Login'
 import EmployeeDashboard from './components/Dashboard/EmployeeDashboard'
 import AdminDashboard from './components/Dashboard/AdminDashboard'
-
-import { useState } from 'react'
 import { AuthContext } from './context/AuthProvider'
-const App = () => {
 
+const App = () => {
   const [user, setUser] = useState(null)
   const [loggedInUserData, setLoggedInUserData] = useState(null)
   const authData = useContext(AuthContext)
 
+  // Theme State Management
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light')
+
   useEffect(() => {
-   const loggedInUser =localStorage.getItem('loggedInUser')
-if(loggedInUser && loggedInUser !== ''){
-  const userData = JSON.parse(loggedInUser)
-  setUser(userData?.role || null)
-  setLoggedInUserData(userData?.data || null)
-}
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
+  const toggleTheme = () => {
+    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light')
+  }
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem('loggedInUser')
+    if(loggedInUser && loggedInUser !== ''){
+      const userData = JSON.parse(loggedInUser)
+      setUser(userData?.role || null)
+      setLoggedInUserData(userData?.data || null)
+    }
   }, [])
 
-  // Listen for changes to employees data in localStorage
   useEffect(() => {
     const handleStorageChange = () => {
-      // If user is an employee, refresh their data from localStorage
       if(user === 'employee' && loggedInUserData?.email) {
         const employeesData = JSON.parse(localStorage.getItem('employees')) || []
         const updatedEmployee = employeesData.find(e => e.email === loggedInUserData.email)
         if(updatedEmployee) {
           setLoggedInUserData(updatedEmployee)
-          // Also update the stored loggedInUser
           localStorage.setItem('loggedInUser', JSON.stringify({role: 'employee', data: updatedEmployee}))
         }
       }
     }
 
-    // Listen to storage events (when localStorage changes)
     window.addEventListener('storage', handleStorageChange)
-    
-    // Also poll for changes every 2 seconds to catch local updates
     const interval = setInterval(handleStorageChange, 2000)
 
     return () => {
@@ -48,19 +55,17 @@ if(loggedInUser && loggedInUser !== ''){
     }
   }, [user, loggedInUserData?.email])
   
-
-
-  const handleLogin = (email,password)=>{
-    if(email=="admin@gmail.com"&& password=="123"){
+  const handleLogin = (email, password) => {
+    if(email === "admin@gmail.com" && password === "123"){
       setUser("admin")
       setLoggedInUserData({name: "Admin", role: "admin"})
-      localStorage.setItem('loggedInUser',JSON.stringify({role:"admin", data:{name: "Admin", role: "admin"}}))
+      localStorage.setItem('loggedInUser', JSON.stringify({role:"admin", data:{name: "Admin", role: "admin"}}))
     } else if(authData?.employees){
-      const employee = authData.employees.find((e)=>email===e.email && password=== e.password)
+      const employee = authData.employees.find((e) => email === e.email && password === e.password)
       if(employee){
         setUser("employee")
         setLoggedInUserData(employee)
-        localStorage.setItem('loggedInUser',JSON.stringify({role:"employee",data:employee}))
+        localStorage.setItem('loggedInUser', JSON.stringify({role:"employee", data:employee}))
       } else {
         alert("Invalid credentials")
       }
@@ -68,16 +73,28 @@ if(loggedInUser && loggedInUser !== ''){
       alert("Please wait, loading employee data...")
     }
   }
+
   return (
-    <>
-{  !user ?  <Login handleLogin = {handleLogin}/>:""
-}   
-{user === "admin" && <AdminDashboard  changeUser={setUser}  data={loggedInUserData} />}
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 selection:bg-emerald-500/30 selection:text-emerald-900 dark:selection:text-emerald-200 transition-colors duration-300">
+      
+      {/* FIX: Changed from 'absolute top-6 right-6' to 'fixed bottom-6 right-6'.
+        Added glassmorphic borders and a deep shadow so it floats cleanly above your tasks.
+      */}
+      <button 
+        onClick={toggleTheme}
+        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-3 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-md shadow-xl border border-slate-200 dark:border-slate-700/80 text-slate-800 dark:text-white font-medium text-sm hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
+      >
+        {theme === 'light' ? (
+          <><span>🌙</span> Dark Mode</>
+        ) : (
+          <><span>☀️</span> Light Mode</>
+        )}
+      </button>
 
-  {user === "employee" && <EmployeeDashboard  changeUser={setUser}   data={loggedInUserData} />}
-
-
-    </>
+      {!user ? <Login handleLogin={handleLogin}/> : null}
+      {user === "admin" && <AdminDashboard changeUser={setUser} data={loggedInUserData} />}
+      {user === "employee" && <EmployeeDashboard changeUser={setUser} data={loggedInUserData} />}
+    </div>
   )
 }
 
