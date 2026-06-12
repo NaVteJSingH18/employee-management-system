@@ -38,7 +38,7 @@ const Login = ({ handleLogin }) => {
                             required 
                             className='w-full outline-none text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-5 py-3.5 focus:border-emerald-500 focus:bg-white dark:focus:bg-slate-800 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-300 placeholder:text-slate-400 dark:placeholder:text-slate-500' 
                             type="email" 
-                            placeholder='e.g. admin@gmail.com' 
+                            placeholder='e.g. admin@gmail.com/emp@g.com' 
                         />
                     </div>
 
@@ -51,7 +51,7 @@ const Login = ({ handleLogin }) => {
                             required 
                             className='w-full outline-none text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-5 py-3.5 focus:border-emerald-500 focus:bg-white dark:focus:bg-slate-800 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-300 placeholder:text-slate-400 dark:placeholder:text-slate-500'   
                             type="password"  
-                            placeholder='Enter your password'
+                            placeholder='123'
                         />
                     </div>
 
